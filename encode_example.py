@@ -19,7 +19,7 @@ array += [0x10, skill1_level]
 if skill2 is not None:
     encoded_skill2 = list(skill2.encode('utf-8'))
     skill2_array = [0x0a, len(encoded_skill2) + 4, 0x0a, len(encoded_skill2)]
-    array += encoded_skill2
+    skill2_array += encoded_skill2
     skill2_array += [0x10, skill2_level]
     array += skill2_array
 
@@ -33,6 +33,7 @@ array += [0x1a, slot_byte_length]
 header_value = 8
 for slot in slots:
     array += [header_value, slot]
+    header_value += 8
 
 # お守りの全体の長さを付与
 array = [0x0a, len(array)] + array
