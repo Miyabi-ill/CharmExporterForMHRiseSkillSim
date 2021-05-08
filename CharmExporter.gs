@@ -67,6 +67,17 @@ function concatTypedArrays(a, b) { // a, b TypedArray of same type
   return c;
 }
 
+function chunkSubstr(str, size) {
+  const numChunks = Math.ceil(str.length / size)
+  const chunks = new Array(numChunks)
+
+  for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
+    chunks[i] = str.substr(o, size)
+  }
+
+  return chunks
+}
+
 /**
  * Base64 encode MHRise charm
  * @param input - The array of input data.
@@ -84,16 +95,18 @@ function encodeCharm(input) {
         outputBytes = concatTypedArrays(outputBytes, charm);
       }
 
-      return encoder(outputBytes);
+      var text = encoder(outputBytes);
+
+      return chunkSubstr(text, 50000);
     }
     else {
       var skill1Name = input[0];
-      var skill1Level = input[1];
+      var skill1Level = parseInt(input[1]) || 0;
       var skill2Name = input[2];
-      var skill2Level = input[3];
-      var charmSlot1 = input[4];
-      var charmSlot2 = input[5];
-      var charmSlot3 = input[6];
+      var skill2Level = parseInt(input[3]) || 0;
+      var charmSlot1 = parseInt(input[4]) || 0;
+      var charmSlot2 = parseInt(input[5]) || 0;
+      var charmSlot3 = parseInt(input[6]) || 0;
 
       if (charmSlot3 > charmSlot2 || charmSlot2 > charmSlot1) {
         throw new Error("charmSlot values must be ordered.");
